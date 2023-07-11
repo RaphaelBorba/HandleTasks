@@ -5,7 +5,7 @@ import ShowInfo from '../components/ShowInfo/ShowInfo'
 export default function Home() {
   return (
     <main className='flex flex-col items-center gap-14 px-5 pt-24'>
-      <Image alt='Hero' src={HeroImg}/>  
+      <Image priority alt='Hero' src={HeroImg}/>  
       <h1 className='text-center text-3xl font-bold text-white'>Sistema feito para você organizar <br/> seus estudos e tarefas</h1>
       <div className='flex flex-wrap justify-center gap-6'>
         <ShowInfo>+ 7 mil posts</ShowInfo>

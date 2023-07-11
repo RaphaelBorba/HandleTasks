@@ -1,8 +1,11 @@
 import Link from "next/link";
 import Button from "../Button/Button";
 import TitleHeader from "./TitleHeader";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Header() {
+
+    const { data: session, status } = useSession()
 
     return (
 
@@ -12,11 +15,26 @@ export default function Header() {
                     <Link href='/'>
                         <TitleHeader />
                     </Link>
-                    <Link href='/dashboard'>
-                        <button className="h-8 w-32 rounded-lg bg-white transition-colors duration-300 hover:bg-slate-200">Acessar Painel</button>
-                    </Link>
+                    {
+                        session &&
+                        (
+                            <Link href='/dashboard'>
+                                <button className="h-8 w-32 rounded-lg bg-white transition-colors duration-300 hover:bg-slate-200">Acessar Painel</button>
+                            </Link>
+                        )
+                    }
+
                 </div>
-                <Button />
+
+                {status === "loading" ? (
+                    <></>
+                ) : session ? (
+                    <Button onClickFunction={() => signOut()} >{`Olá ${session?.user?.name as string}`}</Button>
+                ) :
+                    (
+                        <Button onClickFunction={() => signIn("google")} >Acessar</Button>
+                    )
+                }
             </div>
         </header>
     )
