@@ -9,7 +9,7 @@ export default function Header() {
 
     return (
 
-        <header className="flex h-28 w-screen items-center justify-center">
+        <header className="flex h-28 w-[100%] items-center justify-center">
             <div className="flex w-[80%] max-w-screen-xl items-center justify-between gap-7">
                 <div className="flex items-center justify-center gap-4">
                     <Link href='/'>
