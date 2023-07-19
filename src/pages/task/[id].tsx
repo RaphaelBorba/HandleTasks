@@ -1,10 +1,11 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { db } from "@/services/firebaseConnection";
-import { doc, collection, query, where, getDoc } from "firebase/firestore";
+import { doc, collection, query, where, getDoc, addDoc } from "firebase/firestore";
 import { TaskData } from "@/protocols";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import BlueButton from "@/components/Button/BlueButton";
+import { useSession } from "next-auth/react";
 
 interface TaskPageProps {
 
@@ -14,13 +15,33 @@ interface TaskPageProps {
 export default function TaskPage({data}:TaskPageProps) {
 
     const [comment, setComment] = useState('')
+    const {data:session} = useSession()
     const [isDisable, setIsDisable] = useState(false)
 
     async function handleSubmit(e:FormEvent){
         e.preventDefault()
         setIsDisable(true)
-        
+
+        if(!session?.user?.email || !session?.user?.name) return
+
+        try {
+
+            const docRef = await addDoc(collection(db,"comments"), {
+                comment,
+                created: new Date(),
+                user: session.user.email,
+                name: session.user.name,
+                taskId: data?.taskId
+            })
+
+            setComment('')
+            
+        } catch (error) {
+            console.log(error)
+        }
+
         setIsDisable(false)
+        
     }
 
     return (
@@ -42,7 +63,12 @@ export default function TaskPage({data}:TaskPageProps) {
                     value={comment}
                     onChange={(e)=>setComment(e.target.value)}
                     placeholder="Digite seu comentário"/>
-                    <BlueButton text="Enviar comentário" isDisable={isDisable} />
+                    {
+                        session?.user ?
+                        <BlueButton text="Enviar comentário" isDisable={isDisable} />
+                        :
+                        <BlueButton text="Enviar comentário" isDisable={true} />
+                    }
                 </form>
             </main>
             
