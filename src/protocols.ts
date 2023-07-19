@@ -6,3 +6,13 @@ export type TaskData = {
     created:string;
     taskId:string;
 }
+
+export type CommentType = {
+
+    comment:string;
+    created:string;
+    name:string;
+    user:string;
+    taskId:string;
+    id:string;
+}
