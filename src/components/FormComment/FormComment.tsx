@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 import BlueButton from "../Button/BlueButton"
 import { addDoc, collection } from "firebase/firestore"
 import { db } from "@/services/firebaseConnection"
@@ -7,9 +7,11 @@ import { useSession } from "next-auth/react"
 interface FormCommentProps {
     task: {
         taskId: string
-    }
+    },
+    setRefresh:Dispatch<SetStateAction<boolean>>,
+    refresh: boolean
 }
-export default function FormComment({ task }: FormCommentProps) {
+export default function FormComment({ task, setRefresh, refresh }: FormCommentProps) {
 
     const [comment, setComment] = useState('')
     const [isDisable, setIsDisable] = useState(false)
@@ -33,10 +35,11 @@ export default function FormComment({ task }: FormCommentProps) {
             console.log(error)
         }
         setIsDisable(false)
+        setRefresh(!refresh)
     }
     return (
 
-        <form onSubmit={handleSubmit} className="flex w-[80%] flex-col gap-2 text-white">
+        <form onSubmit={handleSubmit} className="flex w-[100%] flex-col gap-2 text-white">
             <h1 className="text-3xl font-bold">Deixar comentário</h1>
             <textarea
                 className="mb-2 h-fit min-h-[100px] w-[100%] rounded-lg border bg-black p-3 text-xl"
