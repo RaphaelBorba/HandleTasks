@@ -43,7 +43,7 @@ export default function TaskPage({task, allComments}:TaskPageProps) {
                     <h1 className="text-3xl font-bold">Tarefa</h1>
                     <section className="h-fit min-h-[200px] w-[100%] rounded-lg border p-3 text-xl">{task.task}</section>
                 </nav>
-                
+
                 <FormComment setRefresh={setRefresh} refresh={refresh} task={task} />
 
                 <nav className="mb-3 flex w-[100%] flex-col gap-3 text-white">
@@ -52,7 +52,7 @@ export default function TaskPage({task, allComments}:TaskPageProps) {
                         comments.length === 0 && <span>Não há comentários cadastrados!</span>
                     }
                     {
-                        comments.map((e) => <Comment data={e} key={e.id} isUser={session?.user?.email===e.user}/>)
+                        comments.map((e) => <Comment setRefresh={setRefresh} refresh={refresh} data={e} key={e.id} isUser={session?.user?.email===e.user}/>)
                     }
                 </nav>
             </main>
